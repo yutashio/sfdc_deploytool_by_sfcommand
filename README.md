@@ -3,6 +3,9 @@
 * CLIが苦手・コマンドを打つのが面倒　そんな方に是非！  
 
 ## 必要条件
+実行環境
+ * Windows
+
 下記を必ずインストールしておいてください。
 * [Salesforce CLI ※sf (v2)](https://developer.salesforce.com/docs/atlas.ja-jp.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)  
   * インストールやsfdx (v7) から sf (v2) への移行方法はSalesforceのHelpを確認ください。  
@@ -46,7 +49,16 @@
 - `..\toolkit\config\sfdxAuthUrl_org01.txt`を開きます。  
   - [2. 組織を認証 (Authorize an Org) およびSfdxAuthUrlの取得](#2-組織を認証-authorize-an-org-およびsfdx-auth-urlの取得)で取得した`Sfdx Auth Url`を張り付けて保存します。  
 
-## 使用方法  
+## 使用方法および機能  
+- 目次
+  - [メタデータ取得](#メタデータ取得)
+  - [現在の認証済の組織一覧表示](#現在の認証済の組織一覧表示)
+  - [メタデータのデプロイ](#メタデータのデプロイ)
+  - [Sfdx Auth Urlの取得（セットアップ）](#sfdx-auth-urlの取得セットアップ)
+  - [組織への接続（ログイン）](#組織への接続ログイン)
+  - [組織から切断（ログアウト）](#組織から切断ログアウト)
+  - [メタデータの前後比較](#メタデータの前後比較)
+
 > [!IMPORTANT]
 > 事故防止のためBat実行毎に組織への接続（ログイン）・切断（ログアウト）を行っています。  
 
@@ -129,6 +141,8 @@
     - 組織から切断（ログアウト）  
 
 ### メタデータの前後比較  
+> [!IMPORTANT]
+> WinMergeがインストールされている場合に実行可能です。  
 - `openWinMerge.bat`を実行します。  
   - 処理内容  
     - `..\toolkit\01.retrieved_before`内の最新のフォルダを取得。  
