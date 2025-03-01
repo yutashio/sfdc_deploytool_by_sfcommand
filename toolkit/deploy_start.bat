@@ -1,14 +1,14 @@
 @echo off
 
 :inputdeploy
-set /p choice=deployを開始しますか？ (y/n)
-if /i "%choice%"=="y" (
+set /p choice=deployを開始しますか? (Y/N) 
+if /i "%choice%"=="Y" (
 	goto startdeploy
-) else if /i "%choice%"=="n" (
+) else if /i "%choice%"=="N" (
 	echo deployを中止しました。
 	goto enddeploy
 ) else (
-	echo 無効な入力です。
+	echo Y または N を入力してください。
 	goto inputdeploy
 )
 
@@ -31,7 +31,7 @@ Call login_org_sfdx_url.bat login >> "%logfile%"
 
 REM エラーおよび戻り値が1の場合は処理終了
 if %ERRORLEVEL% equ 1 (
-    echo %DATE% %TIME% ログインに失敗しました。 処理を終了します。
+	echo %DATE% %TIME% ログインに失敗しました。 処理を終了します。
 	echo %DATE% %TIME% ログインに失敗しました。 処理を終了します。 >> "%logfile%
 	goto canceldeploy
 )
@@ -43,7 +43,7 @@ type %batch_dir%\log\encodedtosjis.txt >> "%logfile%"
 
 REM setting.iniを読み込み
 for /F "delims== tokens=1,2" %%i in (%batch_dir%\config\setting.ini) do (
-  set %%i=%%j
+	set %%i=%%j
 )
 
 echo %DATE% %TIME% retrieve中・・・
@@ -71,7 +71,7 @@ IF exist "%target_folder%" (
 	echo %DATE% %TIME% retrieveしたメタデータを「%target_folder%」に格納しました。
 	echo %DATE% %TIME% retrieveしたメタデータを「%target_folder%」に格納しました。 >> "%logfile%
 ) else (
-    echo %DATE% %TIME% retrieveしたメタデータの格納に失敗しました。処理を終了します。
+	echo %DATE% %TIME% retrieveしたメタデータの格納に失敗しました。処理を終了します。
 	echo %DATE% %TIME% retrieveしたメタデータの格納に失敗しました。処理を終了します。 >> "%logfile%
 	goto canceldeploy
 )
@@ -105,15 +105,28 @@ type %batch_dir%\log\encodedtosjis.txt >> "%logfile%"
 REM deploy結果確認
 find "Error" "%batch_dir%\log\encodedtosjis.txt" > nul
 if %ERRORLEVEL% == 0 (
-	echo %DATE% %TIME% deploy時にErrorが発生しました。処理を終了します。
-    echo %DATE% %TIME% deploy時にErrorが発生しました。処理を終了します。 >> "%logfile%"
-    goto :canceldeploy
+	echo deploy時にErrorが発生しました。処理を終了します。
+	echo %DATE% %TIME% deploy時にErrorが発生しました。処理を終了します。 >> "%logfile%"
+	goto :canceldeploy
 )
 find "Warning" %batch_dir%\log\encodedtosjis.txt > nul
 if %ERRORLEVEL% == 0 (
-    echo %DATE% %TIME% deploy時にWarningが発生しました。処理を終了します。
-    echo %DATE% %TIME% deploy時にWarningが発生しました。処理を終了します。 >> "%logfile%"
-    goto :canceldeploy
+	echo deploy時にWarningが発生しました。
+	echo %DATE% %TIME% deploy時にWarningが発生しました。 >> "%logfile%"
+
+	:ask_user
+	set /p user_input=処理を続行しますか？ (Y/N) 
+	if /i "%user_input%"=="Y" (
+		echo 処理を続行します。
+		echo %DATE% %TIME% 処理を続行します。 >> "%logfile%"
+	) else if /i "%user_input%"=="N" (
+		echo 処理を終了します。
+		echo %DATE% %TIME% 処理を終了します。 >> "%logfile%"
+		goto :canceldeploy
+	) else (
+		echo Y または N を入力してください。
+		goto :ask_user
+	)
 )
 
 echo %DATE% %TIME% deploy完了・・・
@@ -147,14 +160,14 @@ IF exist "%target_folder%" (
 	echo %DATE% %TIME% retrieveしたメタデータを「%target_folder%」に格納しました。
 	echo %DATE% %TIME% retrieveしたメタデータを「%target_folder%」に格納しました。 >> "%logfile%
 ) else (
-    echo %DATE% %TIME% retrieveしたメタデータの格納に失敗しました。
+	echo %DATE% %TIME% retrieveしたメタデータの格納に失敗しました。
 	echo %DATE% %TIME% retrieveしたメタデータの格納に失敗しました。 >> "%logfile%
 	goto canceldeploy
 )
 
 REM logout
 for /f "delims=" %%i in ('logout_org.bat') do (
-    echo %%i >> %logfile%
+	echo %%i >> %logfile%
 )
 
 REM authorization info
@@ -166,10 +179,10 @@ type %batch_dir%\log\encodedtosjis.txt >> "%logfile%"
 
 REM 使用済みテキストファイル削除
 if exist %batch_dir%\log\sfcommandresults.txt (
-    del %batch_dir%\log\sfcommandresults.txt
+	del %batch_dir%\log\sfcommandresults.txt
 )
 if exist %batch_dir%\log\encodedtosjis.txt (
-    del %batch_dir%\log\encodedtosjis.txt
+	del %batch_dir%\log\encodedtosjis.txt
 )
 
 echo %DATE% %TIME% -----End deploy_start.bat-----

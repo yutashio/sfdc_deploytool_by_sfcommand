@@ -7,7 +7,7 @@ for %%A in ("%~dp0.") do set "batch_dir=%%~fA"
 
 REM setting.iniを読み込み
 for /F "delims== tokens=1,2" %%i in (%batch_dir%\config\setting.ini) do (
-  set %%i=%%j
+	set %%i=%%j
 )
 
 REM ログアウト
