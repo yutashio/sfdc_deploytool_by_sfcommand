@@ -61,7 +61,6 @@ if %errorlevel% neq 0 (
 	echo %DATE% %TIME% retrieveが失敗しました。 処理を終了します。 >> "%logfile%
 	goto canceldeploy
 )
-echo %DATE% %TIME% retrieve_before終了・・・ >> "%logfile%
 
 REM retriveしたフォルダ名を取得する
 set "target_folder=%batch_dir%\01.retrieved_before\%today%_%currenttime%_number"
@@ -75,6 +74,9 @@ IF exist "%target_folder%" (
 	echo %DATE% %TIME% retrieveしたメタデータの格納に失敗しました。処理を終了します。 >> "%logfile%
 	goto canceldeploy
 )
+
+echo %DATE% %TIME% retrieve完了・・・
+echo %DATE% %TIME% retrieve_before終了・・・ >> "%logfile%
 
 echo %DATE% %TIME% deploy中・・・
 echo %DATE% %TIME% deployを開始・・・ >> "%logfile%"
@@ -150,7 +152,6 @@ if %errorlevel% neq 0 (
 	echo %DATE% %TIME% retrieveが失敗しました。 処理を終了します。 >> "%logfile%
 	goto canceldeploy
 )
-echo %DATE% %TIME% retrieve_after終了・・・ >> "%logfile%"
 
 REM retriveしたフォルダ名を取得する
 set "target_folder=%batch_dir%\02.retrieved_after\%today%_%currenttime%_number"
@@ -164,6 +165,9 @@ IF exist "%target_folder%" (
 	echo %DATE% %TIME% retrieveしたメタデータの格納に失敗しました。 >> "%logfile%
 	goto canceldeploy
 )
+
+echo %DATE% %TIME% retrieve完了・・・
+echo %DATE% %TIME% retrieve_after終了・・・ >> "%logfile%"
 
 REM logout
 for /f "delims=" %%i in ('logout_org.bat') do (
